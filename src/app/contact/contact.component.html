@@ -40,25 +40,26 @@
   <!--Reactive form-->
   <div fxFlex fxFlexOffset="200px" class="form-size">
     <h3> Send us your feedback</h3>
+    <p>{{feedbackForm.value | json}} {{ feedbackForm.status}}</p>
 
-    <form novalidate [formGroup]="feedbackForm">
+    <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
       <p>
         <mat-form-field class="half-width">
-          <input matInput fromControlName="firstname" placeholder="First Name" type="text" required>
+          <input matInput formControlName="firstname" placeholder="First Name" type="text" required>
         </mat-form-field>
 
         <mat-form-field class="half-width">
-          <input matInput fromControlName="lastname" placeholder="Last Name" type="text" required>
+          <input matInput formControlName="lastname" placeholder="Last Name" type="text" required>
         </mat-form-field>
 
       </p>
       <p>
         <mat-form-field class="half-width">
-          <input matInput fromControlName="telnum" placeholder="telephone number" type="tel" required>
+          <input matInput formControlName="telnum" placeholder="telephone number" type="tel" required>
         </mat-form-field>
 
         <mat-form-field class="half-width">
-          <input matInput fromControlName="email" placeholder="Email Id" type="email" required>
+          <input matInput formControlName="email" placeholder="Email Id" type="email" required>
         </mat-form-field>
       </p>
 
