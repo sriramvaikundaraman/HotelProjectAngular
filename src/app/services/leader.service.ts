@@ -9,21 +9,21 @@ export class LeaderService {
 
   constructor() { }
 
-  getLeaders():Leader[]{
-    return LEADERS;
+  getLeaders():Promise<Leader[]>{
+    return Promise.resolve(LEADERS);
   }
 
-  getLeader(id:String):Leader{
-    return LEADERS.filter((leader)=>{
+  getLeader(id:String):Promise<Leader>{
+    return Promise.resolve(LEADERS.filter((leader)=>{
       if(leader.id===id)
       return leader;
-    })[0];
+    })[0]);
   }
 
-  getFeaturedLeader():Leader{
-    return LEADERS.filter((leader)=>{
+  getFeaturedLeader():Promise<Leader>{
+    return Promise.resolve(LEADERS.filter((leader)=>{
       if(leader.featured==true)
       return leader;
-    })[0];
+    })[0]);
   }
 }

@@ -8,20 +8,21 @@ import { DISHES } from '../shared/dishes';
 export class DishService {
 
   constructor() { }
-  getDishes():Dish[]{
-    return DISHES;
+  getDishes():Promise<Dish[]>{
+    return Promise.resolve(DISHES);
   }
-  getDish(id: string): Dish {
-    return DISHES.filter((dish) => {
+  
+  getDish(id: string): Promise<Dish> {
+    return Promise.resolve(DISHES.filter((dish) => {
       if(dish.id === id)
       return dish;
     }
-    )[0];
+    )[0]);
   }
-  getFeaturedDish():Dish{
-    return DISHES.filter((dish)=>{
+  getFeaturedDish():Promise<Dish>{
+    return Promise.resolve(DISHES.filter((dish)=>{
       if(dish.featured==true)
       return dish;
-    })[0];
+    })[0]);
   }
 }
