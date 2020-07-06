@@ -13,7 +13,7 @@ export class LeaderService {
   constructor() { }
 
   getLeaders():Observable<Leader[]>{
-    return of(LEADERS).pipe(delay(2000));
+    return of(LEADERS).pipe(delay(1000));
     
   }
 
@@ -21,7 +21,7 @@ export class LeaderService {
     return of(LEADERS.filter((leader)=>{
       if(leader.id===id)
       return leader;
-    })[0]).pipe(delay(2000));
+    })[0]).pipe(delay(1000));
 
   }
 
@@ -29,7 +29,7 @@ export class LeaderService {
     return of(LEADERS.filter((leader)=>{
       if(leader.featured==true)
       return leader;
-    })[0]).pipe(delay(2000));
+    })[0]).pipe(delay(1000));
 
   }
 }
