@@ -30,6 +30,9 @@ export class DishService {
      
  }
 
+
+
+
  getDishIds():Observable< String[] | any>{
    return of(DISHES.map(dish=>dish.id)).pipe(delay(1000));
 
