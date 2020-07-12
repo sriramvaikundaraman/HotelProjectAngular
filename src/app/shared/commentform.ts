@@ -1,5 +1,6 @@
 export class CommentFormDeclaration{
-    name:String;
-    rating:String;
-    commentmsg:String;
+    author:String;
+    rating:number;
+    comment:String;
+    date:String;
 }

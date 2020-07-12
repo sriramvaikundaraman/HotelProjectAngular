@@ -24,7 +24,9 @@ export class DishdetailComponent implements OnInit {
     d = new Date();
     alldishes=DISHES;
     temp:any=[];
-    temparray:any=[];
+    temparray:any;
+    errMsg : String;
+    dishcopy:Dish;
 
 
     commentForm: FormGroup;
@@ -32,18 +34,18 @@ export class DishdetailComponent implements OnInit {
 
 
     formErrors = {
-      'name': '',
-      'commentmsg': ' ',
+      'author': '',
+      'comment': ' ',
       'rating':'',
     };
   
     validationMessages = {
-      'name': {
+      'author': {
         'required':      'First Name is required.',
         'minlength':     'First Name must be at least 2 characters long.',
         'maxlength':     'FirstName cannot be more than 25 characters long.'
       },
-      'commentmsg': {
+      'comment': {
         'required':      'Comment box can never be empty.'     
       },
       'rating':{
@@ -54,11 +56,11 @@ export class DishdetailComponent implements OnInit {
     @ViewChild('fform') commentFormDirective;
 
     selectedDish=Dish;
-  constructor(private dishservice:DishService,
+    constructor(private dishservice:DishService,
       private route:ActivatedRoute,
       private location:Location,
       private fb:FormBuilder,
-      @Inject('BaseURL') private BaseURL ) {
+      @Inject('baseURL') private baseURL ) {
         this.createForm();
         
        }
@@ -84,9 +86,10 @@ export class DishdetailComponent implements OnInit {
   createForm(){  
   
   this.commentForm=this.fb.group({
-          name:['',[Validators.required,Validators.minLength(2),Validators.maxLength(26)]],
-          commentmsg:['',Validators.required],
-          rating:[this.rate]
+          author:['',[Validators.required,Validators.minLength(2),Validators.maxLength(26)]],
+          comment:['',Validators.required],
+          rating:[this.rate],
+          date:['']
        
         });
 
@@ -119,14 +122,20 @@ export class DishdetailComponent implements OnInit {
 
    
     this.comments=this.commentForm.value;   
-    this.temp.push({name:this.comments.name,rating: this.comments.rating,commentmsg:this.comments.commentmsg,date:this.d});
+    this.comments.date=this.d.toString();
+    this.temp.push({author:this.comments.author,rating: this.comments.rating,comment:this.comments.comment,date:this.d});
+    this.dishcopy.comments.push(this.comments);
+    this.dishservice.putDish(this.dishcopy).subscribe(dish=>{
+       this.dish=dish;
+       this.dishcopy=dish;
+    }, errmss=>{this.dish=null;this.dishcopy=null;this.errMsg=<any>errmss});
 
     console.log(this.temp);
     
     
     this.commentForm.reset({
-      name:'',
-      commentmsg:'',
+      author:'',
+      comment:'',
       rating:5
     });
 
@@ -141,7 +150,7 @@ export class DishdetailComponent implements OnInit {
 
     this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
     this.route.params.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
-    .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+    .subscribe(dish => { this.dish = dish; this.dishcopy=dish; this.setPrevNext(dish.id); }, errmess=>this.errMsg=errmess);
 
   }
 
