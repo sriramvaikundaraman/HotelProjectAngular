@@ -6,7 +6,7 @@
     fxLayoutGap="10px" 
     fxLayoutGap.xs="0">
 
-    <div fxFlex="40"  *ngIf="dish">
+    <div fxFlex="40"  *ngIf="dish" [@visibility]="visibility" [@expand]>
     <div fxFlex>
       <mat-card>
         <mat-card-header>
@@ -53,7 +53,7 @@
 
 
   
-  <div fxFlex="40" *ngIf="dish">
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility" [@expand]>
   
 
   <mat-list fxFlex  >
@@ -133,7 +133,7 @@
     
       <p>
         <mat-form-field class="half-width" >
-          <textarea style="height: 200px;"  matInput formControlName="comment" placeholder="Comments" type="text" required></textarea>
+          <textarea   matInput formControlName="comment" placeholder="Comments" type="text" required></textarea>
           <mat-error *ngIf="formErrors.comment">
            {{ formErrors.comment}}
           </mat-error>

@@ -36,11 +36,53 @@
     </div>
   </div>
 
+  
+
+  <div *ngIf="showform" fxFlex [@flyInOut]>
+    <h1 >Your submission</h1>
+  <!--permanent data-->
+  <mat-list-item *ngFor="let com of feedbackCopy">
+    <p matLine >
+      <span>First Name: {{com.firstname }}</span>
+    </p>
+
+    <p matLine>
+      <span>Last Name: {{com.lastname}}</span>
+    </p>
+    <p matLine>
+      <span>Tel No: {{com.telnum}}</span>
+    </p>
+    <p matLine>
+      <span>Email: {{com.email}}</span>
+    </p>
+    <p matLine>
+      <span>Contact you? {{com.agree}}</span>
+    </p>
+    <p matLine>
+      <span>How? {{com.contacttype}}</span>
+    </p>
+    <p matLine>
+      <span>Feedback: {{com.message}}</span>
+    </p>
+  </mat-list-item>
+  </div>
+
+ 
+  
+
+
+  <div fxFlex [hidden]="startfeedback" [@flyInOut]>
+
+    <h3>Submitting feedback</h3>
+    <mat-spinner></mat-spinner>
+    
+  </div>
+
 
   <!--Reactive form-->
-  <div fxFlex fxFlexOffset="200px" class="form-size">
+  <div fxFlex fxFlexOffset="200px" class="form-size" [hidden]="sendingfeedback" *ngIf="reset" [@flyInOut]>
     <h3> Send us your feedback</h3>
-    <p>{{feedbackForm.value | json}} {{ feedbackForm.status}}</p>
+   <!--<p>{{feedbackForm.value | json}} {{ feedbackForm.status}}</p>-->
 
     <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()">
       <p>

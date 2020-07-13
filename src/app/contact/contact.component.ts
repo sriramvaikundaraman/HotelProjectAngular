@@ -1,18 +1,33 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
+import { flyInOut} from '../animations/app.animation';
+import {  FeedbackService} from '../services/feedback.service';
 
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss']
+  styleUrls: ['./contact.component.scss'],
+  host:{
+    '[@flyInOut]':'true',
+    'style': 'display: block;'
+
+  },
+  animations:[ flyInOut()]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback:Feedback;
   contactType = ContactType;
+  errmsg:String;
+  feedbackCopy=[];
+  submitted:boolean;
+  sendingfeedback:boolean=false;
+  startfeedback:boolean=true;
+  showform:boolean=false;
+  reset:boolean=true;
 
   @ViewChild('fform') feedbackFormDirective;
 
@@ -44,7 +59,7 @@ export class ContactComponent implements OnInit {
     },
   };
 
-  constructor(private fb:FormBuilder) { 
+  constructor(private fb:FormBuilder, private feedbackService : FeedbackService,private _cdr: ChangeDetectorRef) { 
     this.createForm();
   }
 
@@ -86,9 +101,47 @@ export class ContactComponent implements OnInit {
     }
   }
 
+  /*
+   this.dishservice.putDish(this.dishcopy).subscribe(dish=>{
+       this.dish=dish;
+       this.dishcopy=dish;
+    }, errmss=>{this.dish=null;this.dishcopy=null;this.errMsg=<any>errmss});
+
+  */
+
 
   onSubmit(){
+    this.submitted=false;
+    this.startfeedback=false;
+    this.showform=false;
+    this.reset=false;
+    this.sendingfeedback=true;
+    this.feedbackCopy.push(this.feedbackForm.value);
     this.feedback=this.feedbackForm.value;
+     this.feedbackService.putFeedback(this.feedback).subscribe(
+    feedback=>{
+     this.feedback=feedback;  
+     this.submitted=true;
+     this.showform=true;
+     this.startfeedback=true;
+     this.sendingfeedback=false;
+    
+     setTimeout(() => {
+  
+      this.showform=false;
+      this.reset=true;
+     
+    }, 5000);
+   },errmss=>{
+     this.errmsg=<any>errmss;
+     this.feedback=null;
+   },
+   
+  )
+  
+   
+
+    
     
     this.feedbackForm.reset({
       firstname:'',
